@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GSAP Scroll Animation with Pinning</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <style>
+    body {
+      height: 400vh; /* To allow scrolling */
+      background-color: #f0f0f0;
+    }
+    .pinned-container {
+      position: relative;
+      height: 100vh; 
+      background-color: aliceblue;
+    }
+
+    .box {
+      width: 100px;
+      height: 100px;
+      background-color: blue;
+    }
+    .fullscreen {
+      height: 100vh;
+    }
+    .triggered {
+      height: 200vh;
+    }
+    .circle {
+      width: 80px;
+      height: 80px;
+      background-color: green;
+      border-radius: 50%;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="fullscreen"></div>
+  <div class="triggered">
+    <div class="pinned-container">
+      <div class="box"></div>
+      <div class="circle"></div>
+    </div>
+  </div>
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.timeline({
+      scrollTrigger: {
+        trigger: ".triggered",
+        start: "top center",
+        end: "bottom center+=-100",
+        scrub: true,
+        pin: ".pinned-container",
+        markers: true,
+      }
+    })
+    .to(".box", { x: 200, backgroundColor: "red", scale: 1.5 }) 
+    .to(".circle", { x: 300, backgroundColor: "orange", scale: 1.2 }, "<") // Starts simultaneously
+    .to(".box", { rotation: 360, borderRadius: "50%", boxShadow: "10px 10px 20px rgba(0, 0, 0, 0.5)" })
+    .to(".circle", { rotation: -360, borderRadius: "20%", boxShadow: "10px 10px 20px rgba(0, 0, 0, 0.5)" }, "<") // Starts simultaneously
+    .to(".box", { opacity: 0.5, filter: "blur(5px)" }) 
+    .to(".circle", { opacity: 0.3, filter: "contrast(200%)" }, "<") // Starts simultaneously
+    .to(".box", { y: 300 })
+    .to(".circle", { y: -200 }, "<");
+
+  </script>
+</body>
+</html>
